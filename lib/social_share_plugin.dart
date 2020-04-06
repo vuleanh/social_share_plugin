@@ -1,3 +1,5 @@
+library social_share_plugin;
+
 import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:flutter/services.dart';
