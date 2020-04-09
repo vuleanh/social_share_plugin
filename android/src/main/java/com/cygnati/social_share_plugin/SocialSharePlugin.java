@@ -65,7 +65,7 @@ public class SocialSharePlugin implements MethodCallHandler, PluginRegistry.Acti
 
     @Override
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("SocialSharePlugin", "onActivityResult");
+        Log.d("SocialSharePlugin", "onActivityResult with request code = " +requestCode);
         if (requestCode == TWITTER_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Log.d("SocialSharePlugin", "Twitter done.");
@@ -176,20 +176,20 @@ public class SocialSharePlugin implements MethodCallHandler, PluginRegistry.Acti
         shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
             @Override
             public void onSuccess(Sharer.Result result) {
-                channel.invokeMethod("onSuccess", null);
                 Log.d("SocialSharePlugin", "Sharing successfully done.");
+                channel.invokeMethod("onSuccess", null);
             }
 
             @Override
             public void onCancel() {
-                channel.invokeMethod("onCancel", null);
                 Log.d("SocialSharePlugin", "Sharing cancelled.");
+                channel.invokeMethod("onCancel", null);
             }
 
             @Override
             public void onError(FacebookException error) {
-                channel.invokeMethod("onError", error.getMessage());
                 Log.d("SocialSharePlugin", "Sharing error occurred.");
+                channel.invokeMethod("onError", error.getMessage());
             }
         });
 
@@ -199,6 +199,7 @@ public class SocialSharePlugin implements MethodCallHandler, PluginRegistry.Acti
     }
 
     private void facebookShareLink(String quote, String url) {
+        Log.d("SocialSharePlugin", "facebookShareLink - quote: " +quote+ ", url: " +url);
         final Uri uri = Uri.parse(url);
         final ShareLinkContent content = new ShareLinkContent.Builder()
                 .setContentUrl(uri).setQuote(quote).build();
@@ -221,7 +222,7 @@ public class SocialSharePlugin implements MethodCallHandler, PluginRegistry.Acti
                 channel.invokeMethod("onError", error.getMessage());
                 Log.d("SocialSharePlugin", "Sharing error occurred.");
             }
-        });
+        }, 123459);
 
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             shareDialog.show(content);
